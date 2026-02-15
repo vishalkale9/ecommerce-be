@@ -1,12 +1,20 @@
 const User = require("../models/userModel")
 const authService = require("../services/authService")
 
+const validateSignup = require("../validators/authValidator");
+
 exports.signup = async (req, res) => {
     try {
-        const { name, email, password } = req.body;
+        // Run validation
+        const errors = validateSignup(req.body);
+        if (errors.length > 0) {
+            return res.status(400).json({ status: "fail", errors });
+        }
+
+        const { name, email, password, role } = req.body;
 
         const hashedPassword = await authService.hashedPassword(password);
-        const newUser = await User.create({ name, email, password: hashedPassword });
+        const newUser = await User.create({ name, email, password: hashedPassword, role });
         const token = await authService.generateToken(newUser._id);
         res.status(201).json({ message: "User created successfully", token, data: { user: newUser } })
     } catch (error) {
