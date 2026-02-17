@@ -6,6 +6,13 @@ const { protect, restrictTo } = require("../middleware/authMiddleware")
 
 /**
  * @swagger
+ * tags:
+ *   name: Categories
+ *   description: Category management API
+ */
+
+/**
+ * @swagger
  * components:
  *   schemas:
  *     Category:
@@ -15,17 +22,8 @@ const { protect, restrictTo } = require("../middleware/authMiddleware")
  *       properties:
  *         name:
  *           type: string
- *           description: The name of the category
  *         description:
  *           type: string
- *           description: Brief description of the category
- */
-
-/**
- * @swagger
- * tags:
- *   name: Categories
- *   description: Category management API
  */
 
 /**
@@ -45,10 +43,6 @@ const { protect, restrictTo } = require("../middleware/authMiddleware")
  *     responses:
  *       201:
  *         description: Category created successfully
- *       400:
- *         description: Bad request
- *       403:
- *         description: Forbidden - Admin only
  */
 router.post("/createCategory", protect, restrictTo("admin"), categoryCtrl.createCategory)
 
@@ -78,7 +72,6 @@ router.get("/getAllCategories", categoryCtrl.getAllCategories)
  *         required: true
  *         schema:
  *           type: string
- *         description: The category id
  *     requestBody:
  *       required: true
  *       content:
@@ -88,8 +81,6 @@ router.get("/getAllCategories", categoryCtrl.getAllCategories)
  *     responses:
  *       200:
  *         description: Category updated successfully
- *       404:
- *         description: Category not found
  */
 router.put("/updateCategory/:id", protect, restrictTo("admin"), categoryCtrl.updateCategory)
 
@@ -107,15 +98,10 @@ router.put("/updateCategory/:id", protect, restrictTo("admin"), categoryCtrl.upd
  *         required: true
  *         schema:
  *           type: string
- *         description: The category id
  *     responses:
  *       200:
  *         description: Category deleted successfully
- *       404:
- *         description: Category not found
  */
 router.delete("/deleteCategory/:id", protect, restrictTo("admin"), categoryCtrl.deleteCategory)
 
 module.exports = router
-
-
